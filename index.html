@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <title>Cosas que no te pasarán en tu puta vida</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+          integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+          crossorigin=""/>
+    <style>
+        #mapid{
+           height: 600px;
+            width: 1200px;
+        }
+    </style>
+</head>
+<body>
+<h3>Cosas que no te pasarán en tu puta vida</h3>
+<div id="mapid"></div>
+
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+        integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+        crossorigin=""></script>
+<script>
+
+    /*Haz de cuenta que éste es el json que te traes por PHP o cualquier otro lenguaje backend.
+    En PHp por ejemplo lo envías con echo json_encode($array); y después acá lo recibes como un JSON
+    */
+    var json= {
+        //girls es un array dentro trae más arrays que contienen latitud, longitud y alguna info
+        girls : [["11.0053713", "-74.8068251,15","10-01-2019 15:00", "SCARLETT JOHANSSON"],["11.000349","-74.8215723,17","23-01-2019 19:30", "JENNIFER LAWRENCE"],["10.9878686","-74.7920466","11-01-2019 21:00", "ANGELINE JOLIE"],
+            ["10.9953455","-74.7816041","12-01-2019 22:15", "GAL GADOT"],["10.9567674","-74.7707734","18-01-2019 23:30", "MEGAN FOX"]]
+
+    };
+
+    //Aquí pones el icono que te de la gana, si quieres traer de la base de datos íconos distintos  para cada lugar no es nada complicado.
+    var marido = L.icon({
+        iconUrl: 'girl.png',
+        iconSize: [40, 40], // size of the icon
+    });
+
+    //Acá creas el mapa y en setview pones lo que quieres que sea el centro del mapa. Puede ser distinto de acuerdo al cliente si lo traes por un json
+    var mymap = L.map('mapid').setView([10.9858321,-74.7964877], 13); //El centro del mapa
+    /*Aquí le pones la plantilla del mapa como quieres que se vea, te dejo varios estilos para que lo cambies
+    https://leaflet-extras.github.io/leaflet-providers/preview/  proveedor de mapas
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' el normal
+    https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png  uno franchute
+    https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png   Germany
+    https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png  Hot?
+    https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x} Esri worldstreetmap
+    'https://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z} mapSurfer?
+    https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}{r}.png  carto DB Voyager
+    https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png wikimedia*/
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://cloudmade.com">CloudMade</a>',
+        maxZoom: 20
+    }).addTo(mymap);
+    //Iteramos los girls del json con un foreach
+    if(json.girls.length > 0){ //Si no hay girls no intenta iterar el array
+        json.girls.forEach(function (puesto,i) {
+            L.marker([parseFloat(json.girls[i][0]), parseFloat(json.girls[i][1])], {icon: marido}).addTo(mymap).bindPopup("Cita con <b>"+json.girls[i][3]+"</b><br>"+json.girls[i][2]);
+        });
+    }
+
+
+</script>
+</body>
+</html>
