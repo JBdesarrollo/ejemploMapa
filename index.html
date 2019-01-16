@@ -40,7 +40,7 @@
     };
 
     //Aquí pones el icono que te de la gana, si quieres traer de la base de datos íconos distintos  para cada lugar no es nada complicado.
-    var marido = L.icon({
+    var girlo = L.icon({
         iconUrl: 'girl.png',
         iconSize: [40, 40], // size of the icon
     });
@@ -64,7 +64,7 @@
     //Iteramos los girls del json con un foreach
     if(json.girls.length > 0){ //Si no hay girls no intenta iterar el array
         json.girls.forEach(function (puesto,i) {
-            L.marker([parseFloat(json.girls[i][0]), parseFloat(json.girls[i][1])], {icon: marido}).addTo(mymap).bindPopup("Cita con <b>"+json.girls[i][3]+"</b><br>"+json.girls[i][2]);
+            L.marker([parseFloat(json.girls[i][0]), parseFloat(json.girls[i][1])], {icon: girl}).addTo(mymap).bindPopup("Cita con <b>"+json.girls[i][3]+"</b><br>"+json.girls[i][2]);
         });
     }
 
